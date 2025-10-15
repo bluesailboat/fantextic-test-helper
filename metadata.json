@@ -1,0 +1,6 @@
+{
+  "name": "凡凡模擬考小幫手",
+  "description": "針對「資策會生成式AI認證」、「經濟部iPAS AI應用規劃師初級」、「經濟部iPAS淨零碳規劃管理師」等能力鑑定，設計模擬試題練習程式，透過AI生成題目、批改解說回饋，幫助使用者輕鬆準備考試。",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
