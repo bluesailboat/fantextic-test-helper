@@ -40,7 +40,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   return (
-    <div className="bg-slate-800 p-6 md:p-8 rounded-xl shadow-2xl max-w-3xl mx-auto">
+    <div className="bg-slate-800 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1">
         <h2 className="text-xl font-semibold text-sky-400 mb-2 sm:mb-0">題目 {questionNumber} / {totalQuestions}</h2>
         <div className="flex items-center space-x-4">
@@ -62,8 +62,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       )}
 
-      <div className="mb-6 p-4 bg-slate-700 rounded-md min-h-[100px] flex items-center">
-        <p className="text-3xl text-slate-200 whitespace-pre-wrap font-semibold">{question.questionText}</p>
+      <div className="mb-6 p-5 bg-slate-700 rounded-lg min-h-[7rem] flex items-center">
+        <p className="text-2xl md:text-3xl text-slate-200 whitespace-pre-wrap font-semibold">{question.questionText}</p>
       </div>
 
       <div className="space-y-4 mb-8">
@@ -85,7 +85,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               className="form-radio h-6 w-6 text-indigo-600 bg-slate-600 border-slate-500 focus:ring-indigo-500 checked:bg-indigo-600 mr-4 shrink-0"
               aria-labelledby={`option-text-${question.id}-${option.key}`}
             />
-            <span id={`option-text-${question.id}-${option.key}`} className="text-xl font-medium">{option.key}. {option.text}</span>
+            <span id={`option-text-${question.id}-${option.key}`} className="text-lg md:text-xl font-medium">{option.key}. {option.text}</span>
           </label>
         ))}
       </div>

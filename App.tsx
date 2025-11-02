@@ -1,5 +1,3 @@
-
-
 import React, { useState, useCallback, useEffect, ComponentType } from 'react';
 import { BrainCircuit, Lightbulb, Sprout, ClipboardList, BookOpen, LucideProps, History } from 'lucide-react';
 import { Question, TestState, AnswerRecord, FeedbackResponse, TestRecord, TopicAnalysis } from './types.ts';
@@ -170,17 +168,30 @@ const App: React.FC = () => {
     if (incorrectQuestions.length === 0) {
         return "<p>本次測驗無錯誤題目，恭喜！</p>";
     }
-    return incorrectQuestions.map((q, index) => {
+    return incorrectQuestions.map((q) => {
         const userAnswerKey = answers[q.id];
         const userAnswerOption = q.options.find(opt => opt.key === userAnswerKey);
         const correctAnswerOption = q.options.find(opt => opt.key === q.correctAnswerKey);
         const originalQuestionIndex = questions.findIndex(origQ => origQ.id === q.id);
 
-        return `<h4>題目 ${originalQuestionIndex + 1}: ${q.questionText}</h4>
-                <p><strong>你的答案：</strong> ${userAnswerOption ? `${userAnswerOption.key}. ${userAnswerOption.text}` : '(未作答)'}</p>
-                <p><strong>正確答案：</strong> ${correctAnswerOption ? `${correctAnswerOption.key}. ${correctAnswerOption.text}` : 'N/A'}</p>
-                <p><strong>詳解：</strong> ${q.explanation || '此題未提供詳解。'}</p>`;
-    }).join('');
+        return `
+            <div>
+              <h4>題目 ${originalQuestionIndex + 1}: ${q.questionText}</h4>
+              <div class="my-3 p-3 bg-red-950/50 border border-red-700/60 rounded-lg">
+                <p class="text-sm font-semibold text-red-300 mb-1">你的答案 (錯誤)</p>
+                <p class="text-base text-slate-200">${userAnswerOption ? `${userAnswerOption.key}. ${userAnswerOption.text}` : '(未作答)'}</p>
+              </div>
+              <div class="mb-3 p-3 bg-green-950/50 border border-green-700/60 rounded-lg">
+                <p class="text-sm font-semibold text-green-300 mb-1">正確答案</p>
+                <p class="text-base text-slate-200">${correctAnswerOption ? `${correctAnswerOption.key}. ${correctAnswerOption.text}` : 'N/A'}</p>
+              </div>
+              <div class="mt-3">
+                <p class="font-semibold text-rose-300">詳解說明：</p>
+                <div class="mt-1 text-slate-300">${q.explanation || '此題未提供詳解。'}</div>
+              </div>
+            </div>
+        `;
+    }).join('<hr class="my-6 border-slate-600/80" />');
   };
 
   const handleSubmitForFeedback = async () => {
@@ -393,11 +404,11 @@ const App: React.FC = () => {
           })}
         </div>
 
-        <div className={`bg-slate-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl mx-auto text-center border-2 ${currentFormatDetails.titleColor.replace('text-', 'border-')}`}>
+        <div className={`bg-slate-800 p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-3xl mx-auto text-center border-2 ${currentFormatDetails.titleColor.replace('text-', 'border-')}`}>
           <h2 className={`text-2xl sm:text-3xl font-bold mb-3 ${currentFormatDetails.titleColor} whitespace-pre-line`}>
             {currentFormatDetails.displayName} 
           </h2>
-          <p className="text-slate-300 mt-4 mb-6 text-sm sm:text-base px-2 leading-relaxed">
+          <p className="text-slate-300 mt-4 mb-6 text-base leading-relaxed">
             {currentFormatDetails.description}
           </p>
           <div className="mb-6 max-w-xs mx-auto">
@@ -444,7 +455,7 @@ const App: React.FC = () => {
           >
             下載完整 CSV 報表
           </button>
-          <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2 border-t border-slate-700 pt-4">
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 border-t border-slate-700 pt-4">
             {testHistory.slice().reverse().map(record => (
               <div key={record.id} className="bg-slate-900/50 p-3 sm:p-4 rounded-lg border border-slate-700">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -507,18 +518,18 @@ const App: React.FC = () => {
         );
       case TestState.VIEWING_FEEDBACK:
         return (
-          <div className="bg-slate-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl max-w-3xl mx-auto text-slate-200">
+          <div className="bg-slate-800 p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl mx-auto text-slate-200">
             <h2 className={`text-2xl sm:text-3xl font-bold mb-2 text-center ${currentFormatDetails.titleColor}`}>測驗回饋</h2>
             <p className={`text-sm text-center text-slate-400 mb-6 whitespace-pre-line`}>針對：{currentFormatDetails.displayName}</p>
             
             {score && (
               <div className="grid grid-cols-2 gap-4 mb-8 text-center">
                 <div className="bg-green-800/60 p-4 rounded-lg shadow-lg border border-green-700">
-                  <p className="text-4xl sm:text-5xl font-extrabold text-green-300">{score.correct}</p>
+                  <p className="text-4xl md:text-5xl font-extrabold text-green-300">{score.correct}</p>
                   <p className="mt-1 text-xs sm:text-sm font-medium text-slate-300">答對題數</p>
                 </div>
                 <div className="bg-red-800/60 p-4 rounded-lg shadow-lg border border-red-700">
-                  <p className="text-4xl sm:text-5xl font-extrabold text-red-300">{score.incorrect}</p>
+                  <p className="text-4xl md:text-5xl font-extrabold text-red-300">{score.incorrect}</p>
                   <p className="mt-1 text-xs sm:text-sm font-medium text-slate-300">答錯題數</p>
                 </div>
               </div>
@@ -586,7 +597,7 @@ const App: React.FC = () => {
   }, [answers, currentQuestionIndex, questions, error, testState]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-4 sm:p-6 md:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-4 sm:p-8 flex flex-col items-center justify-center">
       {isLoading && (
         <LoadingOverlay 
           messages={
@@ -604,7 +615,7 @@ const App: React.FC = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
           凡凡模擬考小幫手
         </h1>
-        <p className="mt-2 text-slate-400 text-base sm:text-lg">Fantextic AI Practice Test</p>
+        <p className="mt-2 text-slate-400 text-base sm:text-lg">Fantextic AI Mock Test Helper</p>
       </header>
 
       <main className="w-full max-w-4xl">
@@ -612,7 +623,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-8 sm:mt-12 text-center text-slate-500 text-xs sm:text-sm">
-        <p>由 Bluesailboat Chen 製作，使用 Google Gemini 生成考題，更新時間：2025.6</p>
+        <p>由 Bluesailboat Chen 製作，使用 Google Gemini 生成考題，更新時間：2025.10</p>
         <p className="mt-1 sm:mt-2">如果遇到異常或錯誤，請稍等幾分鐘後再重試。</p>
       </footer>
     </div>

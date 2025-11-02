@@ -1,4 +1,4 @@
-# 凡凡模擬考小幫手 (Fantextic AI Practice Test)
+# 凡凡模擬考小幫手 (Fantextic AI Mock Test Helper)
 
 這是一個利用 Google Gemini API 驅動的線上模擬測驗練習工具，旨在幫助使用者準備台灣特定的專業能力認證考試。
 
